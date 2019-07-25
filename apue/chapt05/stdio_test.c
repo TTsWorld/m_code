@@ -1,13 +1,15 @@
 #include <stdio.h>
 
+#define LEN 10
 int main()
 {
-    char *buf;
-    FILE *f;
+    char buf[LEN];
 
-    if ((buf = fgets(f, buf, STDIN_FILENO)))
+
+    while(fgets(buf, LEN, stdin))
     {
-
+        //fputs(buf, stdout); 
+        printf("%s\n", buf);
     }
     return 0;
 }

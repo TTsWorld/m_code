@@ -10,6 +10,7 @@
 int main()
 {
     off_t pos;
+    int fcnret;
     char buf[] = "abcd";
     int flag, fd;
     char* filename = "test.txt";
@@ -26,13 +27,13 @@ int main()
         perror("open error: ");
         goto error_exit;
     }
-    //if((pos = lseek(fd, 0, SEEK_SET)) !=0)
-    //{
-    //    perror("seek error:");
-    //    goto error_exit;
-    //}else{
-    //    printf("current position: %lu \n", pos);
-    //}
+    if((pos = lseek(fd, 0, SEEK_SET)) !=0)
+    {
+        perror("seek error:");
+        goto error_exit;
+    }else{
+        printf("current position: %lu \n", pos);
+    }
     if((wbytes = write(fd, buf, sizeof(buf))-1) <0)
     {
         perror("write error:");
@@ -40,19 +41,32 @@ int main()
     }else{
         printf("current position: %lu \n", pos + wbytes);
     }
-    //if ((pos = lseek(fd, 10, SEEK_END)) < 0)
-    //{
-    //    perror("seek error:");
-    //    goto error_exit;
-    //}else{
-    //    printf("current position: %lu \n", pos);
-    //}
+    if ((pos = lseek(fd, 10245, SEEK_END)) < 0)
+    {
+        perror("seek error:");
+        goto error_exit;
+    }else{
+        printf("current position: %lu \n", pos);
+    }
     if ((rbytes = read(fd, buf, sizeof(buf))) < 0 )
     {
-        perror("read error");
+        perror("read error\n");
         goto error_exit;
     }
-    printf("read: %s", buf);
+
+    printf("read: %s \n", buf);
+    if ((fcnret = fcntl(fd, F_GETFL)) == -1)
+    {
+        perror("fcntl error:\n");
+        goto error_exit;
+    }
+    if ((fcnret = fcntl(fd, F_GETFL)) == -1)
+    {
+        perror("fcntl error:\n");
+        goto error_exit;
+    }
+    printf("fd flag is :%x", fcnret);
+
     close(fd);
 
 error_exit:
